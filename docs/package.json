@@ -1,0 +1,32 @@
+{
+  "name": "hospital-management-docs",
+  "version": "1.0.0",
+  "description": "Documentation for Hospital Management System Web Application",
+  "scripts": {
+    "serve": "http-server . -p 8080 -c-1",
+    "build": "npm run build:api-docs",
+    "build:api-docs": "echo 'API docs available at api/swagger-ui.html'",
+    "validate": "echo 'OpenAPI validation - check api/openapi.yml'",
+    "lint:markdown": "markdownlint **/*.md --ignore node_modules",
+    "preview": "npm run serve"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "markdownlint-cli": "^0.37.0",
+    "@apidevtools/swagger-parser": "^10.1.0"
+  },
+  "keywords": [
+    "hospital",
+    "management",
+    "documentation",
+    "api",
+    "healthcare"
+  ],
+  "author": "Hospital Management System Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/hospital-management-system.git",
+    "directory": "docs"
+  }
+}

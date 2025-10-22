@@ -1,0 +1,580 @@
+openapi: 3.0.3
+info:
+  title: Hospital Management System API
+  description: |
+    Comprehensive API for Hospital Management System Web Application
+    
+    This API provides endpoints for managing hospital operations including:
+    - Patient registration and management
+    - Appointment scheduling
+    - Doctor and staff management
+    - Ward and bed allocation
+    - Billing and payments
+    - Pharmacy operations
+    - Laboratory management
+    - Reporting and analytics
+    
+    ## Authentication
+    This API uses JWT (JSON Web Tokens) for authentication. Include the token in the Authorization header:
+    ```
+    Authorization: Bearer <your-jwt-token>
+    ```
+    
+    ## Rate Limiting
+    API requests are rate limited to 100 requests per minute per IP address.
+    
+    ## Error Handling
+    All endpoints return standardized error responses with appropriate HTTP status codes.
+  version: 1.0.0
+  contact:
+    name: Hospital Management System Support
+    email: support@hospital-system.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.hospital-system.com/v1
+    description: Production server
+  - url: https://staging-api.hospital-system.com/v1
+    description: Staging server
+  - url: http://localhost:3000/api
+    description: Development server
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request was successful
+        message:
+          type: string
+          description: Human-readable message
+        data:
+          type: object
+          description: Response data (varies by endpoint)
+        error:
+          type: string
+          description: Error message (only present when success is false)
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of items per page
+        total:
+          type: integer
+          minimum: 0
+          description: Total number of items
+        totalPages:
+          type: integer
+          minimum: 0
+          description: Total number of pages
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        username:
+          type: string
+          description: Username for login
+        email:
+          type: string
+          format: email
+          description: User email address
+        role:
+          type: string
+          enum: [ADMIN, DOCTOR, NURSE, RECEPTIONIST, PHARMACIST]
+          description: User role in the system
+        isActive:
+          type: boolean
+          description: Whether the user account is active
+        lastLogin:
+          type: string
+          format: date-time
+          description: Last login timestamp
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique patient identifier
+        patientId:
+          type: string
+          pattern: '^HMS-\d{4}-\d{6}$'
+          description: Hospital-generated patient ID (HMS-YYYY-NNNNNN)
+        name:
+          type: string
+          description: Patient full name
+        age:
+          type: integer
+          minimum: 0
+          maximum: 150
+          description: Patient age
+        gender:
+          type: string
+          enum: [MALE, FEMALE, OTHER]
+          description: Patient gender
+        contact:
+          type: string
+          description: Patient contact number
+        address:
+          type: object
+          description: Patient address details
+        bloodGroup:
+          type: string
+          description: Patient blood group
+        medicalHistory:
+          type: string
+          description: Patient medical history
+        emergencyContact:
+          type: string
+          description: Emergency contact information
+        registrationDate:
+          type: string
+          format: date-time
+          description: Patient registration date
+        isActive:
+          type: boolean
+          description: Whether the patient record is active
+
+    Doctor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique doctor identifier
+        userId:
+          type: string
+          description: Associated user account ID
+        name:
+          type: string
+          description: Doctor full name
+        specialization:
+          type: string
+          description: Medical specialization
+        contact:
+          type: string
+          description: Doctor contact information
+        consultationFee:
+          type: number
+          format: decimal
+          description: Consultation fee amount
+        availabilitySchedule:
+          type: object
+          description: Doctor availability schedule
+        isActive:
+          type: boolean
+          description: Whether the doctor is active
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique appointment identifier
+        patientId:
+          type: string
+          description: Patient ID
+        doctorId:
+          type: string
+          description: Doctor ID
+        appointmentDate:
+          type: string
+          format: date-time
+          description: Appointment date and time
+        status:
+          type: string
+          enum: [SCHEDULED, COMPLETED, CANCELLED, NO_SHOW]
+          description: Appointment status
+        notes:
+          type: string
+          description: Appointment notes
+        estimatedDuration:
+          type: integer
+          minimum: 15
+          maximum: 240
+          description: Estimated duration in minutes
+        createdAt:
+          type: string
+          format: date-time
+          description: Appointment creation timestamp
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code for programmatic handling
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      description: Authenticate user and return JWT token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  description: Username or email
+                password:
+                  type: string
+                  format: password
+                  description: User password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+                          token:
+                            type: string
+                            description: JWT access token
+                          refreshToken:
+                            type: string
+                            description: JWT refresh token
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh JWT token
+      description: Get new access token using refresh token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+                  description: Valid refresh token
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            description: New JWT access token
+
+  /patients:
+    get:
+      tags:
+        - Patients
+      summary: Get patients list
+      description: Retrieve paginated list of patients with optional filtering
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Items per page
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term for patient name or ID
+        - name: gender
+          in: query
+          schema:
+            type: string
+            enum: [MALE, FEMALE, OTHER]
+          description: Filter by gender
+      responses:
+        '200':
+          description: Patients retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Patient'
+
+    post:
+      tags:
+        - Patients
+      summary: Register new patient
+      description: Create a new patient record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - age
+                - gender
+                - contact
+              properties:
+                name:
+                  type: string
+                  minLength: 2
+                  maxLength: 100
+                age:
+                  type: integer
+                  minimum: 0
+                  maximum: 150
+                gender:
+                  type: string
+                  enum: [MALE, FEMALE, OTHER]
+                contact:
+                  type: string
+                  pattern: '^\+?[1-9]\d{1,14}$'
+                address:
+                  type: object
+                bloodGroup:
+                  type: string
+                medicalHistory:
+                  type: string
+                emergencyContact:
+                  type: string
+      responses:
+        '201':
+          description: Patient registered successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Patient'
+
+  /patients/{patientId}:
+    get:
+      tags:
+        - Patients
+      summary: Get patient details
+      description: Retrieve detailed information for a specific patient
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Patient ID
+      responses:
+        '200':
+          description: Patient details retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        allOf:
+                          - $ref: '#/components/schemas/Patient'
+                          - type: object
+                            properties:
+                              appointments:
+                                type: array
+                                items:
+                                  $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /appointments:
+    get:
+      tags:
+        - Appointments
+      summary: Get appointments list
+      description: Retrieve appointments with optional filtering
+      parameters:
+        - name: doctorId
+          in: query
+          schema:
+            type: string
+          description: Filter by doctor ID
+        - name: patientId
+          in: query
+          schema:
+            type: string
+          description: Filter by patient ID
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Filter by appointment date
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [SCHEDULED, COMPLETED, CANCELLED, NO_SHOW]
+          description: Filter by appointment status
+      responses:
+        '200':
+          description: Appointments retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Appointment'
+
+    post:
+      tags:
+        - Appointments
+      summary: Schedule new appointment
+      description: Create a new appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - patientId
+                - doctorId
+                - appointmentDate
+              properties:
+                patientId:
+                  type: string
+                doctorId:
+                  type: string
+                appointmentDate:
+                  type: string
+                  format: date-time
+                notes:
+                  type: string
+                estimatedDuration:
+                  type: integer
+                  minimum: 15
+                  maximum: 240
+                  default: 30
+      responses:
+        '201':
+          description: Appointment scheduled successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Appointment'
+        '409':
+          description: Appointment conflict (doctor not available)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization
+  - name: Patients
+    description: Patient management operations
+  - name: Appointments
+    description: Appointment scheduling and management
+  - name: Doctors
+    description: Doctor management operations
+  - name: Billing
+    description: Billing and payment operations
+  - name: Pharmacy
+    description: Pharmacy and medicine management
+  - name: Laboratory
+    description: Laboratory test management
+  - name: Reports
+    description: Reporting and analytics

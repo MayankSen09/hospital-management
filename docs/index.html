@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .card ul {
+            list-style: none;
+        }
+        
+        .card li {
+            margin-bottom: 8px;
+        }
+        
+        .card a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .card a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .status-banner {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .status-banner h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .status-banner p {
+            color: #856404;
+        }
+        
+        .quick-links {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .quick-links h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .link-button {
+            display: block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+        
+        .link-button:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Hospital Management System</h1>
+            <p>Comprehensive Documentation Portal</p>
+        </div>
+        
+        <div class="status-banner">
+            <h3>⚠️ Development Status</h3>
+            <p>This system is currently in the planning and specification phase. The actual web application is not yet built. This documentation portal provides the complete system specifications and implementation plans.</p>
+        </div>
+        
+        <div class="card-grid">
+            <div class="card">
+                <h3>📋 System Specifications</h3>
+                <p>Complete requirements, design documents, and implementation roadmap for the hospital management system.</p>
+                <ul>
+                    <li><a href="../.kiro/specs/hospital-management-web/requirements.md">📄 Requirements Document</a></li>
+                    <li><a href="../.kiro/specs/hospital-management-web/design.md">🎨 Design Document</a></li>
+                    <li><a href="../.kiro/specs/hospital-management-web/tasks.md">✅ Implementation Tasks</a></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>🔧 API Documentation</h3>
+                <p>Interactive API documentation and specifications for the hospital management system endpoints.</p>
+                <ul>
+                    <li><a href="api/swagger-ui.html">🌐 Interactive API Docs</a></li>
+                    <li><a href="api/openapi.yml">📝 OpenAPI Specification</a></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>📚 User Guides</h3>
+                <p>Comprehensive guides for administrators, doctors, nurses, and other system users.</p>
+                <ul>
+                    <li><a href="user-guides/admin-guide.md">👨‍💼 Administrator Guide</a></li>
+                    <li><a href="user-guides/user-manual.md">📖 User Manual</a></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>🚀 Deployment</h3>
+                <p>Installation guides, troubleshooting resources, and operational documentation.</p>
+                <ul>
+                    <li><a href="deployment/deployment-guide.md">🛠️ Deployment Guide</a></li>
+                    <li><a href="troubleshooting/troubleshooting-guide.md">🔍 Troubleshooting</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h3>🚀 Quick Actions</h3>
+            <div class="links-grid">
+                <a href="api/swagger-ui.html" class="link-button">View API Docs</a>
+                <a href="user-guides/user-manual.md" class="link-button">User Manual</a>
+                <a href="deployment/deployment-guide.md" class="link-button">Deployment Guide</a>
+                <a href="../.kiro/specs/hospital-management-web/tasks.md" class="link-button">View Tasks</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Hospital Management System Documentation Portal v1.0.0</p>
+            <p>Last Updated: December 2024</p>
+        </div>
+    </div>
+</body>
+</html>
