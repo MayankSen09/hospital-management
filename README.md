@@ -240,3 +240,6 @@ For support, email support@hospital-system.com or create an issue on GitHub.
 ---
 
 **Made with ❤️ for healthcare professionals worldwide**# hospital-management-system
+# hospital-management
+# hospital-management
+# hospital-management
