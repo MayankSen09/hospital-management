@@ -34,7 +34,8 @@
     "deploy": "node scripts/deploy.js",
     "preview": "npm run build && npx serve -s build",
     "predeploy": "npm run build",
-    "deploy-gh": "gh-pages -d build"
+    "deploy-gh": "gh-pages -d build",
+    "postinstall": "cd backend && npm install"
   },
   "eslintConfig": {
     "extends": [
