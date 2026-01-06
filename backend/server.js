@@ -4,9 +4,21 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// For Vercel deployment
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../build')));
+  
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(__dirname, '../build', 'index.html'));
+    }
+  });
+}
 const JWT_SECRET = 'hospital_management_secret_key';
 
 // Middleware
@@ -277,7 +289,7 @@ app.get('/api/dashboard/stats', authenticateToken, (req, res) => {
     todayAppointments: appointments.length,
     availableBeds: wards.reduce((sum, ward) => sum + ward.availableBeds, 0),
     totalBeds: wards.reduce((sum, ward) => sum + ward.totalBeds, 0),
-    revenue: 456780, // Mock revenue
+    revenue: 2000, // Mock revenue
   };
   
   res.json(stats);
