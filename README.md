@@ -65,7 +65,7 @@ A comprehensive web-based Hospital Management System built with React, TypeScrip
 
 ## 🚀 **Live Demo**
 
-Visit the live application: https://hospital-management-nine-gray.vercel.app/dashboard
+Visit the live application: https://hospital-management-mayanksen09-r-mayank-sens-projects.vercel.app
 **Demo Credentials:**
 - Email: `admin@hospital.com`
 - Password: `admin123`
