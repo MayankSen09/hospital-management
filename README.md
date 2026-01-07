@@ -65,7 +65,7 @@ A comprehensive web-based Hospital Management System built with React, TypeScrip
 
 ## 🚀 **Live Demo**
 
-Visit the live application: [Hospital Management System](https://your-vercel-url.vercel.app)
+Visit the live application: [Hospital Management System]((https://hospital-management-nine-gray.vercel.app/dashboard))
 
 **Demo Credentials:**
 - Email: `admin@hospital.com`
@@ -221,21 +221,9 @@ Visit the live application: [Hospital Management System](https://your-vercel-url
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 **Author**
 
-**Hospital Management System Team**
-- GitHub: [@your-username](https://github.com/your-username)
-- Email: contact@hospital-system.com
 
-## 🙏 **Acknowledgments**
 
-- Material-UI team for the excellent component library
-- React team for the amazing framework
-- All contributors who helped improve this project
-
-## 📞 **Support**
-
-For support, email support@hospital-system.com or create an issue on GitHub.
 
 ---
 
